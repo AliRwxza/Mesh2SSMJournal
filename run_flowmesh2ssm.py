@@ -21,7 +21,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default="configs/la_mesh2ssm3d.json")
 
 args = parser.parse_args()
-machine = args.machine
+# machine = args.machine
 with open(args.config, 'rt') as f:
 	t_args = argparse.Namespace()
 	t_args.__dict__.update(json.load(f))

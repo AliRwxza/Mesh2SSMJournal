@@ -6,7 +6,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from .tome import BipartiteWithAttention
+# from .tome import BipartiteWithAttention
 
 def encoding_mask_noise(x, mask_rate=0.3, replace_rate=0.2, mask_token_rate=0.8):
     batch_size, num_features, num_points, k = x.shape
