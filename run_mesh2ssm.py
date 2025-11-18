@@ -74,6 +74,7 @@ val_iter = DataLoader(
 
 template = np.loadtxt(args.data_dir + "/"+args.template_type)
 template = torch.from_numpy(template).type(torch.float)
+template = template.to(args.device)	#Move template to GPU
 
 args.input_x_T = template
 
@@ -83,9 +84,16 @@ args.input_x_T = template
 # Model
 logger.info('Building model...')
 model = Mesh2SSM(args)
+model = model.to(args.device)	# Move the entire model to GPU
+logger.info(f'Model moved to device: {torch.cuda.get_device_name(0)}')
+if torch.cuda.is_available():
+    logger.info(f'GPU: {torch.cuda.get_device_name(0)}')
+    logger.info(f"GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.2f} GB")
+    
 scaled_template = model.input_x_T_scaled
 model.set_template(scaled_template)
 logger.info(repr(model))
+
 
 
 # Define your model optimizer choices

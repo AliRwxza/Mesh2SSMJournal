@@ -105,8 +105,8 @@ class Mesh2SSM(Module):
 		# elif self.args.attention == 2:
 		# 	self.dgcnn = DGCNN_AE2_Attention(args).to(args.device)
 		# else:
-		self.dgcnn = DGCNN_AE2(args).to(args.device)
-		self.imnet = ImNet(in_features=args.emb_dims, nf=args.nf,device=args.device,args=args).to(args.device)
+		self.dgcnn = DGCNN_AE2(args) # .to(args.device)
+		self.imnet = ImNet(in_features=args.emb_dims, nf=args.nf,device=args.device,args=args) #.to(args.device)
 		
 		
 		com = args.input_x_T.mean(axis=0)
