@@ -86,6 +86,7 @@ logger.info('Building model...')
 model = Mesh2SSM(args)
 model = model.to(args.device)	# Move the entire model to GPU
 logger.info(f'Model moved to device: {torch.cuda.get_device_name(0)}')
+
 if torch.cuda.is_available():
     logger.info(f'GPU: {torch.cuda.get_device_name(0)}')
     logger.info(f"GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.2f} GB")
