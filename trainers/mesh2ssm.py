@@ -113,7 +113,7 @@ class Mesh2SSM(Module):
 		input_x_T_com = args.input_x_T.add(-com)
 		template_max = input_x_T_com.norm(dim=1).max().item()
 		self.input_x_T_scaled = input_x_T_com/template_max
-		self.imnet.set_template(args,self.input_x_T_scaled.numpy())
+		self.imnet.set_template(args,self.input_x_T_scaled.detach().cpu().numpy())
 		self.matchingloss = MatchingCosineLoss()
 
 
