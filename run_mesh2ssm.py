@@ -16,13 +16,13 @@ import matplotlib.pyplot as plt
 torch.cuda.empty_cache() 
 temp = 1000 * 1024 * 1024
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = f'max_split_size_mb:{temp}'
-parser = argparse.ArgumentParser()
 
+# Load Configuration
+parser = argparse.ArgumentParser()
 
 parser.add_argument('--config', type=str, default="configs/la_mesh2ssm3d.json")
 
 args = parser.parse_args()
-# machine = args.machine
 with open(args.config, 'rt') as f:
 	t_args = argparse.Namespace()
 	t_args.__dict__.update(json.load(f))
@@ -30,12 +30,12 @@ with open(args.config, 'rt') as f:
 print(os.path.basename(args.data_dir))
 print(os.path.basename(args.log_root))
 
-
 if(args.seed == None):
 	args.seed = np.random.randint(1, 10000)
 seed_all(args.seed)
 
 
+#Validate Hyperparameters
 # Logging
 if args.logging:
 	log_dir = get_new_log_dir(args.log_root, prefix='AE_', postfix='_' + args.tag if args.tag is not None else '')
@@ -50,12 +50,13 @@ else:
 	ckpt_mgr = BlackHole()
 logger.info(args)
 folder_name = os.path.basename(os.path.normpath(log_dir))
+
+#Load Data
 args.folder_name = folder_name
 train_dset = MeshesWithFaces(args, partition='train')
 val_dset = MeshesWithFaces(args, partition ='val', size = train_dset.max_size)
 test_dset = MeshesWithFaces(args, partition ='test', size = train_dset.max_size)
 args.num_vertices = train_dset.max_size
-
 
 train_iter = DataLoader(
 	train_dset,

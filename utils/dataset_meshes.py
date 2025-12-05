@@ -38,7 +38,7 @@ def load_meshes_with_faces(directory, partition, extention,k, max_gdist=None, or
     max_size = 0
     vertices_all = []
     faces_all = []
-    pk_filename = directory + 'idx_' + str(k) + "_" +  partition + f'_geodescis_{max_gdist}.pkl'
+    pk_filename = directory + 'idx_' + str(k) + "_" +  partition + f'_geodesics_{max_gdist}.pkl'
     try:
         save = False
         with open(pk_filename, 'rb') as f:

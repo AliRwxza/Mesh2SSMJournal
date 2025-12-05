@@ -1,7 +1,7 @@
 {
   "model": "mesh2ssm",
   "kl_weight": 0.001,
-  "data_dir": "/kaggle/input/left-femur-meshes-stl",
+  "data_dir": "/kaggle/working/femur_dataset",
   "train_batch_size": 6,
   "val_batch_size": 1,
   "latent_flow_depth": 2,
