@@ -61,14 +61,14 @@ args.num_vertices = train_dset.max_size
 train_iter = DataLoader(
 	train_dset,
 	batch_size=args.train_batch_size,
-	num_workers=8,
+	num_workers=3,
 	shuffle=True
 )
 
 val_iter = DataLoader(
 	val_dset,
 	batch_size=args.val_batch_size,
-	num_workers=8,
+	num_workers=3,
 	drop_last=True,
 	shuffle=True
 )
@@ -86,6 +86,7 @@ args.input_x_T = template
 logger.info('Building model...')
 model = Mesh2SSM(args)
 model = model.to(args.device)	# Move the entire model to GPU
+model = torch.nn.DataParallel(model)	# Wrap the model for multi-GPU training
 logger.info(f'Model moved to device: {torch.cuda.get_device_name(0)}')
 
 if torch.cuda.is_available():

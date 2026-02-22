@@ -121,7 +121,7 @@ class Mesh2SSM(Module):
 	def set_template(self,input_x_T):
 		self.input_x_T = input_x_T
 
-		self.imnet.set_template(self.args, self.input_x_T.numpy())
+		self.imnet.set_template(self.args, self.input_x_T.detach().cpu().numpy())
 
 
 	def get_loss_mesh_consistency_perturb(self, gt_vertices, faces=None, idx=None):
