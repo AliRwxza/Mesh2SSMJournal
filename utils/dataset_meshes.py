@@ -88,9 +88,10 @@ def load_meshes_with_faces(directory, partition, extention,k, max_gdist=None, or
 
 
 class MeshesWithFaces(Dataset):
-    def __init__(self, args, scale_mode=None, partition = 'train', extention = "ply", noise_level=0,shuffle_points=False,size=None):
+    def __init__(self, args, scale_mode=None, partition = 'train', extention = "ply", noise_level=0,shuffle_points=False,size=None, limit=None):
         self.mesh_dir = args.data_dir + f'/{partition}/meshes/'
-        self.data, self.faces_all, self.idx_all, self.max_size, self.scale, self.filename = load_meshes_with_faces(self.mesh_dir, partition, args.mesh_extension,args.k,args.max_gdist)
+        self.data, self.faces_all, self.idx_all, self.max_size, self.scale, self.filename \
+            = load_meshes_with_faces(self.mesh_dir, partition, args.mesh_extension ,args.k ,args.max_gdist ,limit=limit)
         self.partition = partition     
         self.noise_level = noise_level
         self.scale_mode = scale_mode
