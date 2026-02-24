@@ -53,9 +53,9 @@ folder_name = os.path.basename(os.path.normpath(log_dir))
 
 #Load Data
 args.folder_name = folder_name
-train_dset = MeshesWithFaces(args, partition='train', size=20)
-val_dset = MeshesWithFaces(args, partition ='val', size = train_dset.max_size, size=5)
-test_dset = MeshesWithFaces(args, partition ='test', size = train_dset.max_size, size=5)
+train_dset = MeshesWithFaces(args, partition='train')
+val_dset = MeshesWithFaces(args, partition ='val', size = train_dset.max_size)
+test_dset = MeshesWithFaces(args, partition ='test', size = train_dset.max_size)
 args.num_vertices = train_dset.max_size
 
 train_iter = DataLoader(

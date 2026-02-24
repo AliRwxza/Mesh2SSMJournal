@@ -26,12 +26,17 @@ def geodescis(pos, face,k, max_gdist):
         # print("Geodesics error")
     return idx
 
-def load_meshes_with_faces(directory, partition, extention,k, max_gdist=None, organ=None):
+def load_meshes_with_faces(directory, partition, extention,k, max_gdist=None, organ=None, limit=None):
 
     if(max_gdist==None):
         max_gdist = 5
-    
+        
+        
+    ## TODO: Change the logic so it makes the orcer of the files have more randomness
     files = sorted(glob.glob(directory + "/*."+extention))
+    
+    if limit!=None:
+        files = files[:limit]
      
     if(len(files) == 0):
         raise Exception("No files. Check the extention of meshes specified") 
