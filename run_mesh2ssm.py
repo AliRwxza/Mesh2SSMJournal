@@ -77,7 +77,8 @@ val_iter = DataLoader(
 	shuffle=True
 )
 
-template = np.loadtxt(args.data_dir + "/"+args.template_type)
+# template = np.loadtxt(args.data_dir + "/"+args.template_type)
+template = np.loadtxt(args.template_type)
 template = torch.from_numpy(template).type(torch.float)
 template = template.to(args.device)	#Move template to GPU
 
