@@ -12,6 +12,10 @@ from trainers.mesh2ssm import *
 from utils.dataset_meshes import *
 from test import test_all
 import matplotlib.pyplot as plt
+from accelerate import Accelerator
+
+accelerator = Accelerator(mixed_precision="fp16")
+device = accelerator.device
 
 torch.cuda.empty_cache() 
 temp = 1000 * 1024 * 1024
@@ -20,7 +24,7 @@ os.environ["PYTORCH_CUDA_ALLOC_CONF"] = f'max_split_size_mb:{temp}'
 # Load Configuration
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--config', type=str, default="configs/la_mesh2ssm3d.json")
+parser.add_argument('--config', type=str, default="configs/femur.json")
 
 args = parser.parse_args()
 with open(args.config, 'rt') as f:
@@ -81,7 +85,6 @@ args.input_x_T = template
 
 
 
-
 # Model
 logger.info('Building model...')
 model = Mesh2SSM(args)
@@ -108,6 +111,14 @@ optimizer_choices = {
 
 # Choose an optimizer 
 optimizer = optimizer_choices[args.optimizer]
+
+model, optimizer, train_iter, val_iter = accelerator.prepare(
+    model, optimizer, train_iter, val_iter
+)
+
+raw_model = accelerator.unwrap_model(model)
+scaled_template = raw_model.input_x_T_scaled
+raw_model.set_template(scaled_template)
 
 def validate_inspect(epoch):
 
@@ -206,15 +217,16 @@ try:
 			# Reset grad and model state
 			optimizer.zero_grad()
 			
-			faces = batch['faces'].to(args.device)
-			idx = batch['idx'].to(args.device)
-			gt_vertices = batch['true_pointcloud'].to(args.device)
+			faces = batch['faces']
+			idx = batch['idx']
+			gt_vertices = batch['true_pointcloud']
 			
 			
 			loss, loss_cd, loss_consistency, loss_dgcnn = model.get_loss_mesh_consistency_perturb(gt_vertices, faces, idx)
 			
 			# Backward and optimize
-			loss.backward()    
+			# loss.backward()
+			accelerator.backward(loss)
 			optimizer.step()
 			
 			if (it % batch_iter == 0):
