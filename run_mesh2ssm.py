@@ -97,7 +97,13 @@ if torch.cuda.is_available():
     logger.info(f'GPU: {torch.cuda.get_device_name(0)}')
     logger.info(f"GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.2f} GB")
     
-scaled_template = model.input_x_T_scaled
+# Check if the model is wrapped in DataParallel
+if isinstance(model, torch.nn.DataParallel):
+    scaled_template = model.module.input_x_T_scaled
+else:
+    scaled_template = model.input_x_T_scaled
+
+# scaled_template = model.input_x_T_scaled
 model.set_template(scaled_template)
 logger.info(repr(model))
 
