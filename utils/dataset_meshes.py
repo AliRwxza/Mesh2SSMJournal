@@ -75,8 +75,8 @@ def load_meshes_with_faces(directory, partition, extention,k, max_gdist=None, or
             print("calling geodescis function")
             idx = geodescis(vertices, faces,k, max_gdist)
             idx_all[name] = idx[:,:k]
-            with open(pk_filename, 'wb') as f:
-                pickle.dump(idx_all,f)
+            # with open(pk_filename, 'wb') as f:
+            #     pickle.dump(idx_all,f)
         scale = np.max(np.abs(vertices))
         if(scale>max_scale):
             max_scale = scale
@@ -87,9 +87,9 @@ def load_meshes_with_faces(directory, partition, extention,k, max_gdist=None, or
             max_size = len(vertices)
             print(f'max size of vertices: {max_size}')
         
-    if(save ==True):
-        with open(pk_filename, 'wb') as f:
-            pickle.dump(idx_all,f)
+    # if(save ==True):
+        # with open(pk_filename, 'wb') as f:
+        #     pickle.dump(idx_all,f)
     print("returning")
     return vertices_all, faces_all,idx_all, max_size, max_scale, filename
 
