@@ -35,6 +35,8 @@ def load_meshes_with_faces(directory, partition, extention,k, max_gdist=None, or
     ## TODO: Change the logic so it makes the orcer of the files have more randomness
     files = sorted(glob.glob(directory + "/*."+extention))
     
+    print(f"Data count limited at: {limit}")
+    
     if limit!=None:
         files = files[:limit]
      
@@ -62,6 +64,11 @@ def load_meshes_with_faces(directory, partition, extention,k, max_gdist=None, or
         filename.append(name)
         print(f'Loading file: {name}')
         mesh = pv.read(f)
+        
+        if mesh.n_points > 10000:
+            target_reduction = 1 - (10000 / mesh.n_points)
+            mesh = mesh.decimate(target_reduction)
+        
         vertices = np.array(mesh.points).astype('float')
         faces = np.asarray(mesh.faces).reshape((-1, 4))[:, 1:]
         if (save == True or name not in  idx_all.keys() ):
