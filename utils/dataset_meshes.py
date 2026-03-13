@@ -65,8 +65,8 @@ def load_meshes_with_faces(directory, partition, extention,k, max_gdist=None, or
         print(f'Loading file: {name}')
         mesh = pv.read(f)
         
-        if mesh.n_points > 10000:
-            target_reduction = 1 - (10000 / mesh.n_points)
+        if mesh.n_points > 5000:
+            target_reduction = 1 - (5000 / mesh.n_points)
             mesh = mesh.decimate(target_reduction)
         
         vertices = np.array(mesh.points).astype('float')
